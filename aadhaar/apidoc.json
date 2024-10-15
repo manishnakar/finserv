@@ -1,0 +1,76 @@
+openapi: 3.0.0
+info:
+  title: Aadhaar Validation API
+  description: API to validate an Aadhaar number
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /validate:
+    post:
+      summary: Validate an Aadhaar number
+      description: Validate an Aadhaar number using the Aadhaar API
+      operationId: validateAadhaar
+      requestBody:
+        description: Aadhaar number to validate
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - aadhaarNumber
+              properties:
+                aadhaarNumber:
+                  type: string
+                  pattern: "^[2-9]{1}[0-9]{11}$"
+                  description: Aadhaar number to validate
+      responses:
+        200:
+          description: Aadhaar number is valid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isValid:
+                    type: boolean
+                    description: Whether the Aadhaar number is valid
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+
+    ValidationError:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
